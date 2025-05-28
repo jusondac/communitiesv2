@@ -36,7 +36,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_032105) do
   create_table "payment_transactions", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "community_id", null: false
-    t.boolean "community"
+    t.boolean "is_community"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["community_id"], name: "index_payment_transactions_on_community_id"
