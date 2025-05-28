@@ -10,6 +10,8 @@ class CommunitiesController < ApplicationController
 
   # GET /communities/1
   def show
+    @members = @community.user_communities.includes(:user).where(user_type: "member", approved: true)
+    @subscribers = @community.user_communities.includes(:user).where(user_type: "subscriber", approved: true)
   end
 
   # GET /communities/new

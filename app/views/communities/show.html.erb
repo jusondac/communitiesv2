@@ -1,89 +1,139 @@
 <% content_for :title, @community.name %>
-<div class="max-w-4xl mx-auto">
-  <!-- Header Section -->
+<!-- Minimalist Show Page -->
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <!-- Simple Breadcrumb -->
+  <nav class="flex text-sm text-gray-500 dark:text-gray-400 mb-6">
+    <%= link_to "/", class: "hover:text-gray-900 dark:hover:text-white transition-colors" do %>
+      Home
+    <% end %>
+    <span class="mx-2">/</span>
+    <%= link_to "Communities", communities_path, class: "hover:text-gray-900 dark:hover:text-white transition-colors" %>
+    <span class="mx-2">/</span>
+    <span class="text-gray-900 dark:text-white"><%= @community.name %></span>
+  </nav>
+  <!-- Community Header -->
   <div class="mb-8">
-    <nav class="flex items-center space-x-2 text-sm text-gray-500 dark:text-gray-400 mb-4">
-      <%= link_to root_path, class: "hover:text-gray-700 dark:hover:text-gray-200 transition-colors" do %>
-        <svg class="w-4 h-4 inline" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
-        </svg>
-        Home
-      <% end %>
-      <span>/</span>
-      <%= link_to "Communities", communities_path, class: "hover:text-gray-700 dark:hover:text-gray-200 transition-colors" %>
-      <span>/</span>
-      <span class="text-gray-900 dark:text-white font-medium"><%= @community.name %></span>
-    </nav>
-    <div class="flex items-start justify-between">
-      <div class="flex-1">
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2"><%= @community.name %></h1>
-        <div class="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
-          <span class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300 rounded-full font-medium">
+    <div class="flex items-start justify-between mb-4">
+      <div>
+        <h1 class="text-3xl font-light text-gray-900 dark:text-white mb-2"><%= @community.name %></h1>
+        <div class="flex items-center space-x-3 text-sm">
+          <span class="px-3 py-1 bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 rounded-full">
             <%= @community.public? ? 'Public Community' : 'Private Community' %>
           </span>
-          <span>Created <%= @community.created_at.strftime("%B %d, %Y") %></span>
+          <span class="text-gray-500 dark:text-gray-400">
+            Created <%= @community.created_at.strftime("%B %Y") %>
+          </span>
         </div>
       </div>
+    </div>
+    <!-- Description -->
+    <div class="prose prose-gray dark:prose-invert max-w-none">
+      <p class="text-gray-700 dark:text-gray-300 leading-relaxed">
+        <%= simple_format(@community.description) %>
+      </p>
     </div>
   </div>
-  <!-- Content Section -->
-  <div class="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
-    <div class="p-8">
-      <div class="mb-8">
-        <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">About this community</h2>
-        <div class="prose prose-gray dark:prose-invert max-w-none">
-          <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-base">
-            <%= simple_format(@community.description) %>
-          </p>
-        </div>
-      </div>
-      <!-- Stats Section -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 py-6 border-t border-gray-100 dark:border-gray-700">
-        <div class="text-center">
-          <div class="text-2xl font-bold text-blue-600 dark:text-blue-400">0</div>
-          <div class="text-sm text-gray-500 dark:text-gray-400">Members</div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl font-bold text-green-600 dark:text-green-400">0</div>
-          <div class="text-sm text-gray-500 dark:text-gray-400">Posts</div>
-        </div>
-        <div class="text-center">
-          <div class="text-2xl font-bold text-purple-600 dark:text-purple-400">
-            <%= time_ago_in_words(@community.created_at) %>
-          </div>
-          <div class="text-sm text-gray-500 dark:text-gray-400">Age</div>
-        </div>
-      </div>
+  <!-- Stats Section -->
+  <div class="grid grid-cols-3 gap-8 py-6 mb-8 border-y border-gray-200 dark:border-gray-700">
+    <div class="text-center">
+      <div class="text-2xl font-light text-blue-600 dark:text-blue-400"><%= @members.count %></div>
+      <div class="text-sm text-gray-500 dark:text-gray-400">Members</div>
     </div>
-    <!-- Action Bar -->
-    <div class="px-8 py-4 bg-gray-50 dark:bg-gray-750 border-t border-gray-100 dark:border-gray-700 rounded-b-xl">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center space-x-3">
-          <%= link_to edit_community_path(@community), class: "inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors" do %>
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-            </svg>
-            Edit Community
+    <div class="text-center">
+      <div class="text-2xl font-light text-green-600 dark:text-green-400"><%= @subscribers.count %></div>
+      <div class="text-sm text-gray-500 dark:text-gray-400">Subscribers</div>
+    </div>
+    <div class="text-center">
+      <div class="text-2xl font-light text-purple-600 dark:text-purple-400">
+        <%= time_ago_in_words(@community.created_at) %>
+      </div>
+      <div class="text-sm text-gray-500 dark:text-gray-400">Age</div>
+    </div>
+  </div>
+  <!-- Members & Subscribers -->
+  <div class="grid md:grid-cols-2 gap-8 mb-8">
+    <!-- Members Section -->
+    <div>
+      <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        Members (<%= @members.count %>)
+      </h2>
+      <% if @members.any? %>
+        <div class="space-y-3">
+          <% @members.limit(5).each do |user_community| %>
+            <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                <%= user_community.user.email_address.first.upcase %>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <%= user_community.user.email_address.split('@').first %>
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Joined <%= time_ago_in_words(user_community.created_at) %> ago
+                </p>
+              </div>
+            </div>
           <% end %>
-          <%= link_to communities_path, class: "inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-600 dark:hover:bg-gray-500 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg transition-colors" do %>
-            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
-            </svg>
-            Back to Communities
+          <% if @members.count > 5 %>
+            <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+              And <%= @members.count - 5 %> more members...
+            </p>
           <% end %>
         </div>
-        <%= button_to community_path(@community), method: :delete, 
-            class: "inline-flex items-center px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors",
-            data: { 
-              turbo_confirm: "Are you sure you want to delete this community? This action cannot be undone.",
-              turbo_method: :delete 
-            } do %>
-          <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-          </svg>
-          Delete Community
-        <% end %>
-      </div>
+      <% else %>
+        <p class="text-gray-500 dark:text-gray-400 text-sm">No members yet</p>
+      <% end %>
     </div>
+    <!-- Subscribers Section -->
+    <div>
+      <h2 class="text-lg font-medium text-gray-900 dark:text-white mb-4">
+        Subscribers (<%= @subscribers.count %>)
+      </h2>
+      <% if @subscribers.any? %>
+        <div class="space-y-3">
+          <% @subscribers.limit(5).each do |user_community| %>
+            <div class="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                <%= user_community.user.email_address.first.upcase %>
+              </div>
+              <div class="flex-1 min-w-0">
+                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <%= user_community.user.email_address.split('@').first %>
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                  Subscribed <%= time_ago_in_words(user_community.created_at) %> ago
+                </p>
+              </div>
+            </div>
+          <% end %>
+          <% if @subscribers.count > 5 %>
+            <p class="text-sm text-gray-500 dark:text-gray-400 text-center">
+              And <%= @subscribers.count - 5 %> more subscribers...
+            </p>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 dark:text-gray-400 text-sm">No subscribers yet</p>
+      <% end %>
+    </div>
+  </div>
+  <!-- Action Buttons -->
+  <div class="flex items-center justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
+    <div class="flex space-x-3">
+      <%= link_to edit_community_path(@community), class: "px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition-colors" do %>
+        Edit Community
+      <% end %>
+      <%= link_to communities_path, class: "px-4 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200 text-sm font-medium rounded-lg transition-colors" do %>
+        Back to Communities
+      <% end %>
+    </div>
+    <%= button_to community_path(@community), method: :delete, 
+        class: "px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm font-medium rounded-lg transition-colors",
+        data: { 
+          turbo_confirm: "Are you sure you want to delete this community? This action cannot be undone.",
+          turbo_method: :delete 
+        } do %>
+      Delete Community
+    <% end %>
   </div>
 </div>

@@ -1,10 +1,11 @@
 class UserCommunity < ApplicationRecord
   belongs_to :user
   belongs_to :community
+
   # Validations
   validates :approved, presence: true
 
-  enum :type, {
+  enum :user_type, {
     member: 0,
     subscriber: 1
   }
