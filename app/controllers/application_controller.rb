@@ -11,7 +11,8 @@ class ApplicationController < ActionController::Base
   def set_sidebar_menu
     @sidebar_menus = [
       { name: "Dashboard", path: "/", icon: dashboard },
-      { name: "Communities", path: "/communities", icon: community }
+      { name: "Communities", path: "/communities", icon: community },
+      { name: "Users", path: "/users", icon: users },
       # { name: "Orders", path: "/orders", icon: orders, role: "admin user supplier" },
       # { name: "Suppliers", path: "/suppliers", icon: orders, role: "admin user" },
       # {

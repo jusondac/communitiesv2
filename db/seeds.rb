@@ -8,6 +8,7 @@
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
 
+require 'faker'
 puts "Seeding database..."
 puts "Cleaning up existing data..."
 User.destroy_all
@@ -19,6 +20,17 @@ User.create(
   password_confirmation: "q1w2e3r4"
 )
 
+puts "Creating 20 random users..."
+20.times do
+  username = Faker::Internet.unique.username(specifier: 5..10)
+  User.create!(
+    email_address: "#{username}#{rand(1000)}@gmail.com",
+    password: "password123",
+    password_confirmation: "password123",
+    username: username
+  )
+end
+
 puts "Creating communities..."
 communities = [
   { name: "Ruby Enthusiasts", description: "A community for Ruby language lovers." },
@@ -28,6 +40,17 @@ communities = [
   { name: "Fitness Freaks", description: "Motivation and tips for fitness enthusiasts." }
 ]
 
+created_communities = []
 communities.each do |community_attrs|
-  Community.find_or_create_by!(community_attrs)
+  created_communities << Community.find_or_create_by!(community_attrs)
+end
+
+puts "Creating user-community relationships..."
+# Randomly assign users to communities
+created_communities.each do |community|
+  # Each community gets 5-15 random members
+  sample_users = User.all.sample(rand(5..15))
+  sample_users.each do |user|
+    UserCommunity.find_or_create_by!(user: user, community: community, user_type: rand(0..1), approved: true)
+  end
 end

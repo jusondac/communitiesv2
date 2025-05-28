@@ -14,6 +14,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_032105) do
   create_table "communities", force: :cascade do |t|
     t.string "name"
     t.text "description"
+    t.boolean "public", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -67,7 +68,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_032105) do
     t.integer "user_id", null: false
     t.integer "community_id", null: false
     t.boolean "approved"
-    t.integer "type"
+    t.integer "user_type", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["community_id"], name: "index_user_communities_on_community_id"
@@ -99,7 +100,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_032105) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "username", default: "67c5b892a", null: false
+    t.string "username", default: "532374683", null: false
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
