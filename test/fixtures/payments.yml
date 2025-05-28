@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  created_at: 2025-05-28 10:21:03
+  payer_id: 1
+  receiver_id: 1
+  category: 1
+  status: 1
+  amount: 1
+  payment_method: one
+
+two:
+  created_at: 2025-05-28 10:21:03
+  payer_id: 1
+  receiver_id: 1
+  category: 1
+  status: 1
+  amount: 1
+  payment_method: two
