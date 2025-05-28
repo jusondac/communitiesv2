@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
-  resources :users, only: %i[index]
+  resources :users, only: %i[index] do
+    collection do
+      get :my_communities
+    end
+  end
   resources :communities
   get "home/index"
   root "home#index"
