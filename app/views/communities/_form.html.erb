@@ -1,25 +1,89 @@
-<%= form_with(model: community, class: "contents text-white flex flex-col gap-5 mt-4" ) do |form| %>
+<%= form_with(model: community, local: true, class: "space-y-6") do |form| %>
   <% if community.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(community.errors.count, "error") %> prohibited this community from being saved:</h2>
-
-      <ul>
+    <div class="bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 rounded-lg p-4">
+      <div class="flex items-center mb-3">
+        <svg class="w-5 h-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+        </svg>
+        <h3 class="text-sm font-medium text-red-800 dark:text-red-200">
+          <%= pluralize(community.errors.count, "error") %> prohibited this community from being saved:
+        </h3>
+      </div>
+      <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-300 space-y-1">
         <% community.errors.each do |error| %>
           <li><%= error.full_message %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-
-  <div>
-    <%= form.text_field :name, placeholder: "name", class: ["block shadow-sm rounded-md border bg-gray-700 px-3 py-2 mt-2 w-full", {"border-gray-600 focus:outline-blue-600": community.errors[:name].none?, "border-red-400 focus:outline-red-600": community.errors[:name].any?}] %>
+  <div class="space-y-6">
+    <!-- Name Field -->
+    <div>
+      <%= form.label :name, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+      <%= form.text_field :name, 
+          placeholder: "Enter community name", 
+          class: [
+            "block w-full px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-800 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-colors",
+            community.errors[:name].any? ? "border-red-300 dark:border-red-600" : "border-gray-300 dark:border-gray-600"
+          ] %>
+      <% if community.errors[:name].any? %>
+        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+          <%= community.errors[:name].first %>
+        </p>
+      <% end %>
+    </div>
+    <!-- Description Field -->
+    <div>
+      <%= form.label :description, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+      <%= form.text_area :description, 
+          placeholder: "Describe your community, its purpose, and what members can expect...", 
+          rows: 5,
+          class: [
+            "block w-full px-4 py-3 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 bg-white dark:bg-gray-800 border rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 dark:focus:ring-blue-400 dark:focus:border-blue-400 transition-colors resize-none",
+            community.errors[:description].any? ? "border-red-300 dark:border-red-600" : "border-gray-300 dark:border-gray-600"
+          ] %>
+      <% if community.errors[:description].any? %>
+        <p class="mt-1 text-sm text-red-600 dark:text-red-400">
+          <%= community.errors[:description].first %>
+        </p>
+      <% end %>
+      <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+        Help others understand what your community is about and what kind of discussions or activities they can expect.
+      </p>
+    </div>
+    <!-- Public/Private Toggle -->
+    <div>
+      <%= form.label :public, class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3" do %>
+        Community Visibility
+      <% end %>
+      <div class="space-y-3">
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <%= form.radio_button :public, true, class: "mt-0.5 h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400" %>
+          <div class="flex-1">
+            <div class="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              Public Community
+            </div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">
+              Anyone can discover and join this community
+            </div>
+          </div>
+        </label>
+        <label class="flex items-start space-x-3 cursor-pointer group">
+          <%= form.radio_button :public, false, class: "mt-0.5 h-4 w-4 text-blue-600 border-gray-300 dark:border-gray-600 focus:ring-blue-500 dark:focus:ring-blue-400" %>
+          <div class="flex-1">
+            <div class="text-sm font-medium text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+              Private Community
+            </div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">
+              Only invited members can access this community
+            </div>
+          </div>
+        </label>
+      </div>
+    </div>
   </div>
-
-  <div>
-    <%= form.textarea :description, placeholder: "description", class: ["block shadow-sm rounded-md border bg-gray-700 px-3 py-2 mt-2 w-full", {"border-gray-600 focus:outline-blue-600": community.errors[:description].none?, "border-red-400 focus:outline-red-600": community.errors[:description].any?}] %>
-  </div>
-
-  <div>
-    <%= form.submit nil, class:"font-bold px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-500 inline-flex items-center" %>
+  <!-- Submit Button -->
+  <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+    <%= form.submit class: "w-full sm:w-auto inline-flex justify-center items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed" %>
   </div>
 <% end %>
