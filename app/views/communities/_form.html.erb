@@ -1,0 +1,25 @@
+<%= form_with(model: community, class: "contents text-white flex flex-col gap-5 mt-4" ) do |form| %>
+  <% if community.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(community.errors.count, "error") %> prohibited this community from being saved:</h2>
+
+      <ul>
+        <% community.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.text_field :name, placeholder: "name", class: ["block shadow-sm rounded-md border bg-gray-700 px-3 py-2 mt-2 w-full", {"border-gray-600 focus:outline-blue-600": community.errors[:name].none?, "border-red-400 focus:outline-red-600": community.errors[:name].any?}] %>
+  </div>
+
+  <div>
+    <%= form.textarea :description, placeholder: "description", class: ["block shadow-sm rounded-md border bg-gray-700 px-3 py-2 mt-2 w-full", {"border-gray-600 focus:outline-blue-600": community.errors[:description].none?, "border-red-400 focus:outline-red-600": community.errors[:description].any?}] %>
+  </div>
+
+  <div>
+    <%= form.submit nil, class:"font-bold px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-500 inline-flex items-center" %>
+  </div>
+<% end %>
