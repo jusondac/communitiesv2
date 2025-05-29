@@ -26,7 +26,8 @@ class CommunitiesController < ApplicationController
   # POST /communities
   def create
     @community = Community.new(community_params)
-
+    finance = Finance.create(balance: 100, is_community: true)
+    @community.finance = finance
     if @community.save
       redirect_to communities_path, notice: "Community was successfully created."
     else

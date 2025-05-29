@@ -12,9 +12,14 @@ require 'faker'
 puts "Seeding database..."
 puts "Cleaning up existing data..."
 User.destroy_all
+Community.destroy_all
+Payment.destroy_all
+PaymentMethod.destroy_all
+UserCommunity.destroy_all
 
+users = []
 puts "Creating default user..."
-User.create(
+users << User.create(
   email_address: "user@gmail.com",
   password: "q1w2e3r4",
   password_confirmation: "q1w2e3r4"
@@ -23,13 +28,25 @@ User.create(
 puts "Creating 20 random users..."
 20.times do
   username = Faker::Internet.unique.username(specifier: 5..10)
-  User.create!(
+  users << User.create!(
     email_address: "#{username}#{rand(1000)}@gmail.com",
     password: "password123",
     password_confirmation: "password123",
     username: username
   )
 end
+
+
+puts "Creating payment methods..."
+paymentMethods = [
+  { name: "Credit Card" },
+  { name: "PayPal" },
+  { name: "Bank Transfer" },
+  { name: "App" },
+  { name: "Cash" }
+]
+PaymentMethod.create!(paymentMethods) unless PaymentMethod.exists?
+
 
 puts "Creating communities..."
 communities = [
@@ -39,6 +56,11 @@ communities = [
   { name: "Bookworms", description: "A place for people who love to read and discuss books." },
   { name: "Fitness Freaks", description: "Motivation and tips for fitness enthusiasts." }
 ]
+# Create communities
+# Using find_or_create_by! to ensure idempotency
+# This will not create duplicates if the community already exists
+# It will raise an error if the community cannot be created due to validation errors
+
 
 created_communities = []
 communities.each do |community_attrs|
@@ -54,3 +76,11 @@ created_communities.each do |community|
     UserCommunity.find_or_create_by!(user: user, community: community, user_type: rand(0..1), approved: true)
   end
 end
+
+puts "Creatign finances for each community"
+
+# Create finances for communities
+created_communities.each do |community|
+  community.create_finance(balance: rand(1000..5000))
+end
+# Create some random finances for users

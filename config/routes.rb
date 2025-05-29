@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resources :finances, only: [ :index ] do
+    collection do
+      post :send_money
+      post :create_finance
+      post :top_up
+    end
+  end
   resources :users, only: %i[index] do
     collection do
       get :my_communities

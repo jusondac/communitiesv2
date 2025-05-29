@@ -10,21 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_28_032105) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_29_003624) do
   create_table "communities", force: :cascade do |t|
     t.string "name"
     t.text "description"
     t.boolean "public", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "finance_id"
   end
 
   create_table "finances", force: :cascade do |t|
     t.integer "balance"
-    t.integer "payment_transaction_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["payment_transaction_id"], name: "index_finances_on_payment_transaction_id"
+    t.boolean "is_community", default: false
   end
 
   create_table "payment_methods", force: :cascade do |t|
@@ -34,8 +34,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_032105) do
   end
 
   create_table "payment_transactions", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "community_id", null: false
+    t.integer "user_id"
+    t.integer "community_id"
     t.boolean "is_community"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -101,10 +101,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_28_032105) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "username", default: "532374683", null: false
+    t.integer "finance_id"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
-  add_foreign_key "finances", "payment_transactions"
   add_foreign_key "payment_transactions", "communities"
   add_foreign_key "payment_transactions", "users"
   add_foreign_key "payments", "payment_methods"

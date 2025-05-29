@@ -13,6 +13,7 @@ class ApplicationController < ActionController::Base
       { name: "Dashboard", path: "/", icon: dashboard },
       { name: "Communities", path: "/communities", icon: community },
       { name: "Users", path: "/users", icon: users },
+      { name: "My Finances", path: "/finances", icon: wallet }
       # { name: "Orders", path: "/orders", icon: orders, role: "admin user supplier" },
       # { name: "Suppliers", path: "/suppliers", icon: orders, role: "admin user" },
       # {

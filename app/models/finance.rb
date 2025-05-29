@@ -1,11 +1,10 @@
 class Finance < ApplicationRecord
-  belongs_to :payment_transaction
   # Validations
-  validates :balance, presence: true
+  validates :balance, presence: true, numericality: { greater_than_or_equal_to: 0 }
 
   ## update the ransackable below with column you want to add ransack
   def self.ransackable_attributes(auth_object = nil)
-    ["id"]
+    [ "id" ]
   end
 
   def self.ransackable_associations(auth_object = nil)
