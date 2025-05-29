@@ -3,16 +3,8 @@ class FinancesController < ApplicationController
 
   def index
     @user_finance = current_user.finance
-
+    @payments = Payment.for_current_user.includes(:payer, :receiver, :payment_method)
     # Get payment history (sent and received) for better transaction display
-    if @user_finance.present?
-      @transactions = Payment.includes(:payer, :receiver)
-                            .where("payer_id = ? OR receiver_id = ?", current_user.id, current_user.id)
-                            .order(created_at: :desc)
-                            .limit(10)
-    else
-      @transactions = []
-    end
 
     @communities = Community.all
     @users = User.where.not(id: current_user.id).with_finance

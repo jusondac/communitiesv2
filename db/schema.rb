@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_29_003624) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_29_175446) do
   create_table "communities", force: :cascade do |t|
     t.string "name"
     t.text "description"
@@ -25,6 +25,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_003624) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "is_community", default: false
+    t.string "name", default: "", null: false
   end
 
   create_table "payment_methods", force: :cascade do |t|

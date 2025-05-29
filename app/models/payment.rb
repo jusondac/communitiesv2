@@ -11,12 +11,18 @@ class Payment < ApplicationRecord
   validates :payer_id, presence: true
   validates :amount, presence: true, numericality: { greater_than: 0 }
 
+  # Scopes
+  scope :for_current_user, -> {
+    user_finance_id = Current.user&.finance&.id
+    where("payer_id = ? OR receiver_id = ?", user_finance_id, user_finance_id)
+  }
+
   ## update the ransackable below with column you want to add ransack
   def self.ransackable_attributes(auth_object = nil)
-    [ "id" ]
+    [ "id", "payer_id", "receiver_id", "amount", "status", "category", "created_at" ]
   end
 
   def self.ransackable_associations(auth_object = nil)
-    []
+    [ "payer", "receiver", "payment_method" ]
   end
 end

@@ -14,12 +14,14 @@ puts "Cleaning up existing data..."
 User.destroy_all
 Community.destroy_all
 Payment.destroy_all
+Finance.destroy_all
 PaymentMethod.destroy_all
 UserCommunity.destroy_all
 
 users = []
 puts "Creating default user..."
 users << User.create(
+  username: "Megan Fox",
   email_address: "user@gmail.com",
   password: "q1w2e3r4",
   password_confirmation: "q1w2e3r4"
@@ -81,6 +83,6 @@ puts "Creatign finances for each community"
 
 # Create finances for communities
 created_communities.each do |community|
-  community.create_finance(balance: rand(1000..5000))
+  community.create_finance(balance: rand(1000..5000), name: community.name)
 end
 # Create some random finances for users

@@ -21,7 +21,7 @@ class FinanceService
   # Create a finance account for a user
   def self.create_finance_account(user, initial_balance: 1000)
     return { success: false, error: "User not found" } unless user
-    finance = Finance.create!(balance: 100, is_community: false)
+    finance = Finance.create!(balance: 100, is_community: false, name: user.username)
     user.update(finance: finance)
 
     # Check if user already has a finance account
