@@ -1,4 +1,20 @@
+# Helper methods for the Finances views.
 module FinancesHelper
+  # Returns a Tailwind CSS class string for styling a payment status badge.
+  #
+  # The returned string always includes base pill classes (small text, horizontal
+  # padding, vertical padding, and fully rounded corners) combined with
+  # status-specific foreground and background colours that support both light
+  # and dark mode:
+  #
+  #   completed  – green
+  #   pending    – yellow
+  #   failed     – red
+  #   processing – blue
+  #   (other)    – gray  (fallback for any unrecognised status)
+  #
+  # @param status [String, Symbol] the payment status value
+  # @return [String] a space-separated list of Tailwind CSS utility classes
   def payment_status_class(status)
     base_classes = "text-xs px-2 py-0.5 rounded-full"
 
